@@ -28,12 +28,22 @@ const deal = functions.https.onRequest(async (req, res) => {
 
 const addToPile = async (card, ref) => {
   try {
-    const cardsSnap = await ref.child('pile/cards').once('value');
-    const cards = cardsSnap.val()
-        ? [...cardsSnap.val(), card]
+    const pileSnap = await ref.child('pile').once('value');
+
+    const pile = pileSnap.val();
+    console.log(pileSnap.val());
+
+    const cards = pile.cards
+        ? [...pile.cards, card]
         : [card]
 
-    return ref.child('pile/cards').set(cards);
+    const updatedPile = {
+      cards,
+      cardCount: ++pile.cardCount,
+      topCard: card
+    };
+
+    return ref.child('pile').set(updatedPile);
   } catch (error) {
     throw error;
   }

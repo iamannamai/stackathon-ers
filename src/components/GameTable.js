@@ -42,6 +42,14 @@ class GameTable extends Component {
     this.subscribeSelf && db.ref(`games/${this.props.gameId}/players/${this.props.playerName}/deckCount`).off('value', this.subscribeSelf);
   }
 
+  onDeal() {
+
+  }
+
+  onSlap() {
+
+  }
+
   render() {
     // Each opponent should have a listener for their own player card count and such
     return (
@@ -63,6 +71,7 @@ class GameTable extends Component {
                 color="secondary"
                 size="medium"
                 style={{minWidth: '5rem', minHeight: '5rem'}}
+                onClick={this.onDeal}
                 >
                 Deal
               </Fab>
@@ -70,6 +79,7 @@ class GameTable extends Component {
                 variant="round"
                 color="primary"
                 style={{minWidth: '7rem', minHeight: '7rem'}}
+                onClick={this.onSlap}
                 >
                 SLAP!
               </Fab>
