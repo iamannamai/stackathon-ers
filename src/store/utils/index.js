@@ -1,5 +1,4 @@
 import axios from 'axios';
-import _ from 'lodash';
 
 const DECKOFCARDS_BASE_URL = 'https://deckofcardsapi.com/api/deck';
 

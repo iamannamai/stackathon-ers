@@ -3,7 +3,7 @@ import NameInput from './NameInput';
 import PendingGame from './PendingGame';
 import GameTable from './GameTable'
 import {connect} from 'react-redux';
-import {getGame, joinGame, startGame, setStartGame} from '../store';
+import {getGame, joinGame, startGame} from '../store';
 import {db} from '../firebase/fire';
 
 class ExistingGame extends Component {
@@ -25,9 +25,7 @@ class ExistingGame extends Component {
       });
     });
 
-    // TODO: set up listener. this is not working
     this.subscribeInProgress = gameProgressRef.on('value', (snapshot) => {
-      console.log(snapshot.val());
       this.setState({inProgress: snapshot.val()});
     });
   }

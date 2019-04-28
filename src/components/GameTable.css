@@ -1,0 +1,10 @@
+.opponent img {
+  width: 50%;
+  width: 10vw;
+}
+
+#opponents {
+  display: flex;
+  justify-content: space-between;
+  height: 10vh;
+}

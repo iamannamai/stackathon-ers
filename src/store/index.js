@@ -59,15 +59,18 @@ export const createNewGame = name => async dispatch => {
     const ref = await gamesRef.child(new_deckId).set({
       inProgress: false
     });
-    await ref.child('playersList').push(name);
 
+    await gamesRef.child(`${new_deckId}/playersList`).push(name);
     const setGameBody = {
       gameId: new_deckId,
-      inProgress: ref.child('inProgress').val(),
+      inProgress: false,
+      playerName: name
     };
 
+    const createdDeck = await gamesRef.child(new_deckId);
+
     dispatch(setGame(setGameBody));
-    history.push(`/${ref.key}`);
+    history.push(`/${createdDeck.key}`);
   } catch (error) {
     console.error(error);
   }
@@ -100,7 +103,6 @@ export const startGame = () => async dispatch => {
   try {
     const {gameId, playersList} = store.getState();
     let playersAndHands = await dealHands(gameId, playersList);
-    console.log(playersAndHands);
     const gameRef = db.ref(`games/${gameId}`)
     await Promise.all([
       gameRef.child('inProgress').set(true),
@@ -132,7 +134,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         gameId: action.game.gameId,
-        inProgress: action.game.inProgress
+        inProgress: action.game.inProgress,
+        playerName: action.game.playerName
       };
     case SET_PLAYERNAME:
       return {
