@@ -8,7 +8,7 @@ const StartGame = props => {
   return (
     <div>
       <h1>Welcome!</h1>
-      <h5>Looks like you're not in a game room. Enter your name and start a new game</h5>
+      <h5>Looks like you're not in a game room<br/>Enter your name and start a new game</h5>
       <NameInput handleName={startNewGame} buttonText="New Game" />
     </div>
   )

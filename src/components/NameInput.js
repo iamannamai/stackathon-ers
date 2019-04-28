@@ -21,7 +21,6 @@ class NameInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state.name);
     this.props.handleName(this.state.name);
   }
 
