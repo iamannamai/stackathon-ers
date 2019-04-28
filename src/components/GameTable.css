@@ -1,10 +1,29 @@
+.opponent-card-dim {
+  background: white;
+  border-radius: 2px;
+  min-height: 7rem;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+}
+
 .opponent img {
-  width: 50%;
-  width: 10vw;
+  height: 5rem;
+}
+
+#game-table {
+  min-width: 100vw;
+  min-height: 100vh;
+  padding: 1em;
+}
+
+p.opponent-name, p.opponent-card-count {
+  margin: 2px;
+  font-size: 1rem;
 }
 
 #opponents {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 10vh;
 }

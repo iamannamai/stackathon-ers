@@ -31,9 +31,9 @@ class Opponents extends Component {
   render() {
     return (
       <div className="opponent">
-        <div className="opponent-name">{this.state.name}</div>
-        <Card />
-        <div className="opponent-card-count">{this.state.count}</div>
+        <p className="opponent-name">{this.state.name}</p>
+        <Card classes="opponent-card-dim" />
+        <p className="opponent-card-count">{this.state.count}</p>
       </div>
     );
   }

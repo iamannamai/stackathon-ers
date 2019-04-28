@@ -25,7 +25,7 @@ class GameTable extends Component {
       });
     });
     db.ref(`games/${this.props.gameId}/players`).once('value', snapshot => {
-      const opponents = Object.keys(snapshot.val());
+      const opponents = Object.keys(snapshot.val()).filter(name => name !== this.props.playerName);
       this.setState({opponents});
     });
 

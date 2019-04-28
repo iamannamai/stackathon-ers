@@ -56,11 +56,12 @@ export const getGame = gameId => async dispatch => {
 export const createNewGame = name => async dispatch => {
   try {
     const new_deckId = await newDeck();
-    const ref = await gamesRef.child(new_deckId).set({
+    await gamesRef.child(new_deckId).set({
       inProgress: false
     });
 
     await gamesRef.child(`${new_deckId}/playersList`).push(name);
+
     const setGameBody = {
       gameId: new_deckId,
       inProgress: false,
