@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
-const {onCreateGame} = require('./game');
+const {onCreateGame} = require('./slap');
+const {deal} = require('./deal');
 const cors = require('cors')({ origin: true });
 
 
@@ -10,4 +11,5 @@ const cors = require('cors')({ origin: true });
 //  response.send("Hello from Firebase!");
 // });
 
-exports.onCreateGame = onCreateGame;
+exports.deal = deal;
+

@@ -21,10 +21,12 @@ class Pile extends Component {
     });
 
     // Subscribe to changes
-    this.subscribePile = db.ref(`games/${this.props.gameId}/pile/cardCount`).on('value', snapshot =>
+    this.subscribePile = db.ref(`games/${this.props.gameId}/pile/cardCount`).on('value', snapshot => {
+      console.log("PILE COUNT: ", snapshot.val());
       this.setState({
         pileCount: snapshot.val()
       })
+      }
     );
   }
 
@@ -35,7 +37,10 @@ class Pile extends Component {
   render() {
     return (
       <div id="pile">
-        <img src="https://deckofcardsapi.com/static/img/3H.png"/>
+        <img
+          src={this.state.topCard.img || "https://deckofcardsapi.com/static/img/3H.png"}
+        />
+        <p>{this.state.pileCount}</p>
       </div>
     )
   }
