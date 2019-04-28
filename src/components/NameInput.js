@@ -31,11 +31,12 @@ class NameInput extends Component {
           <FormControl>
             <Input
               name="player_name"
-              placeholder="Call me..."
+              placeholder="My name is..."
               value={this.state.name}
               onChange={this.handleChange}
+              style={{"background": "white", "padding": "5px"}}
             />
-            <Button type="submit" color="primary">{this.props.buttonText}</Button>
+            <Button variant="contained" type="submit" color="primary" disabled={this.state.name === ''}>{this.props.buttonText}</Button>
           </FormControl>
         </form>
       </div>

@@ -31,7 +31,7 @@ class PendingGame extends Component {
         <div>
           <CircularProgress />
         </div>
-        <Button type="button" color="primary" onClick={this.props.startGame}>Start Game</Button>
+        <Button variant="contained" type="button" color="primary" onClick={this.props.startGame}>Start Game</Button>
       </div>
     )
   }

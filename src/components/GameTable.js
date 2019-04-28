@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import Fab from '@material-ui/core/Fab';
 import Opponent from './Opponent';
 import Pile from './Pile';
-import Card from './Card';
+import MyDeck from './MyDeck';
 import {db} from '../firebase/fire';
 import './GameTable.css';
 // import {} from './store';
@@ -12,8 +13,7 @@ class GameTable extends Component {
     super(props);
     this.state = {
       opponents: [],
-      myDeckCount: 0,
-      pileCount: 0
+      myDeckCount: 0
     }
   }
 
@@ -52,9 +52,30 @@ class GameTable extends Component {
           }
         </div>
         <div id="my-view">
-          <div id="my-deck"></div>
-          {/* <Pile /> */}
-          <div id="buttons"></div>
+          <div id="me">
+            <MyDeck
+              name={this.props.playerName}
+              count={this.state.myDeckCount}
+            />
+            <div id="buttons">
+              <Fab
+                variant="round"
+                color="secondary"
+                size="medium"
+                style={{minWidth: '5rem', minHeight: '5rem'}}
+                >
+                Deal
+              </Fab>
+              <Fab
+                variant="round"
+                color="primary"
+                style={{minWidth: '7rem', minHeight: '7rem'}}
+                >
+                SLAP!
+              </Fab>
+            </div>
+          </div>
+          <Pile />
         </div>
       </div>
     );

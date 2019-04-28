@@ -3,26 +3,24 @@ import { connect } from 'react-redux';
 import {db} from '../firebase/fire';
 
 class Pile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pileCount: 0,
+      topCard: {}
+    }
+  }
 
   async componentDidMount() {
     // Set local state
-    db.ref(`games/${this.props.gameId}/players/${this.props.playerName}/deckCount`).once('value', snapshot => {
-      this.setState({
-        myDeckCount: snapshot.val()
-      });
-    });
     db.ref(`games/${this.props.gameId}/pile/cardCount`).once('value', snapshot => {
+      console.log(snapshot.val());
       this.setState({
         pileCount: snapshot.val()
       });
     });
 
     // Subscribe to changes
-    this.subscribeSelf = db.ref(`games/${this.props.gameId}/players/${this.props.playerName}/deckCount`).on('value', snapshot => {
-      this.setState({
-        myDeckCount: snapshot.val()
-      });
-    });
     this.subscribePile = db.ref(`games/${this.props.gameId}/pile/cardCount`).on('value', snapshot =>
       this.setState({
         pileCount: snapshot.val()
@@ -30,8 +28,16 @@ class Pile extends Component {
     );
   }
 
+  componentWillUnmount() {
+
+  }
+
   render() {
-    return
+    return (
+      <div id="pile">
+        <img src="https://deckofcardsapi.com/static/img/3H.png"/>
+      </div>
+    )
   }
 }
 
