@@ -7,7 +7,6 @@ import MyDeck from './MyDeck';
 import {db} from '../firebase/fire';
 import './GameTable.css';
 import axios from 'axios';
-// import {} from './store';
 
 class GameTable extends Component {
   constructor(props) {
@@ -19,6 +18,8 @@ class GameTable extends Component {
     };
     this.onDeal = this.onDeal.bind(this);
     this.onSlap = this.onSlap.bind(this);
+    this.dealOnShift = this.dealOnShift.bind(this);
+    this.slapOnSpace = this.slapOnSpace.bind(this);
   }
 
   async componentDidMount() {
@@ -45,7 +46,6 @@ class GameTable extends Component {
     });
     this.subscribeSlaps = db.ref(`games/${this.props.gameId}/slapped`).on('value', snapshot => {
       const slapped = snapshot.val();
-      console.log(slapped);
       this.setState({slapped});
     });
 
