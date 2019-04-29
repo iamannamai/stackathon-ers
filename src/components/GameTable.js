@@ -6,6 +6,7 @@ import Pile from './Pile';
 import MyDeck from './MyDeck';
 import {db} from '../firebase/fire';
 import './GameTable.css';
+import axios from 'axios';
 // import {} from './store';
 
 class GameTable extends Component {
@@ -13,8 +14,11 @@ class GameTable extends Component {
     super(props);
     this.state = {
       opponents: [],
-      myDeckCount: 0
-    }
+      myDeckCount: 0,
+      slapped: null
+    };
+    this.onDeal = this.onDeal.bind(this);
+    this.onSlap = this.onSlap.bind(this);
   }
 
   async componentDidMount() {
@@ -28,6 +32,10 @@ class GameTable extends Component {
       const opponents = Object.keys(snapshot.val()).filter(name => name !== this.props.playerName);
       this.setState({opponents});
     });
+    db.ref(`games/${this.props.gameId}/slapped`).once('value', snapshot => {
+      const slapped = snapshot.val();
+      this.setState({slapped});
+    });
 
     // Subscribe to changes
     this.subscribeSelf = db.ref(`games/${this.props.gameId}/players/${this.props.playerName}/deckCount`).on('value', snapshot => {
@@ -35,23 +43,31 @@ class GameTable extends Component {
         myDeckCount: snapshot.val()
       });
     });
+    this.subscribeSlaps = db.ref(`games/${this.props.gameId}/slapped`).on('value', snapshot => {
+      const slapped = snapshot.val();
+      this.setState({slapped});
+    });
   }
 
   componentWillUnmount() {
     // Unsubscribe
     this.subscribeSelf && db.ref(`games/${this.props.gameId}/players/${this.props.playerName}/deckCount`).off('value', this.subscribeSelf);
+
+    this.subscribeSlaps && db.ref(`games/${this.props.gameId}/slapped`).off('value', this.subscribeSlaps);
   }
 
   onDeal() {
-
+    axios.post('https://us-central1-stackathon-ers.cloudfunctions.net/deal', {
+      gameId: this.props.gameId,
+      playerName: this.props.playerName
+    });
   }
 
   onSlap() {
-
+    db.ref(`games/${this.props.gameId}`).child('slapped').set(this.props.playerName);
   }
 
   render() {
-    // Each opponent should have a listener for their own player card count and such
     return (
       <div id="game-table">
         <div id="opponents">
@@ -71,6 +87,7 @@ class GameTable extends Component {
                 color="secondary"
                 size="medium"
                 style={{minWidth: '5rem', minHeight: '5rem'}}
+                disabled={this.state.slapped || !this.state.myDeckCount || false}
                 onClick={this.onDeal}
                 >
                 Deal
@@ -79,6 +96,7 @@ class GameTable extends Component {
                 variant="round"
                 color="primary"
                 style={{minWidth: '7rem', minHeight: '7rem'}}
+                disabled={this.state.slapped || false}
                 onClick={this.onSlap}
                 >
                 SLAP!

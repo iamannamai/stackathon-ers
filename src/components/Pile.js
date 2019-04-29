@@ -1,49 +1,57 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {db} from '../firebase/fire';
+import {db, func} from '../firebase/fire';
 
 class Pile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pileCount: 0,
+      count: 0,
       topCard: {}
     }
   }
 
   async componentDidMount() {
     // Set local state
-    db.ref(`games/${this.props.gameId}/pile/cardCount`).once('value', snapshot => {
-      console.log(snapshot.val());
-      this.setState({
-        pileCount: snapshot.val()
-      });
+    let pileSnap = await db.ref(`games/${this.props.gameId}/pile`).once('value');
+
+    const pile = pileSnap.val();
+    this.setState({
+      count: pile.cardCount,
+      topCard: pile.topCard
     });
 
+
     // Subscribe to changes
-    this.subscribePile = db.ref(`games/${this.props.gameId}/pile/cardCount`).on('value', snapshot => {
+    this.subscribePile = db.ref(`games/${this.props.gameId}/pile`).on('value', snapshot => {
       console.log("PILE COUNT: ", snapshot.val());
+      const pile = snapshot.val();
       this.setState({
-        pileCount: snapshot.val()
-      })
-      }
-    );
+        count: pile.cardCount,
+        topCard: pile.topCard
+      });
+    });
   }
 
   componentWillUnmount() {
-
+    db.ref(`games/${this.props.gameId}/pile`).off('value', this.subscribePile);
   }
 
   render() {
     return (
       <div id="pile">
         <img
-          src={this.state.topCard.img || "https://deckofcardsapi.com/static/img/3H.png"}
+          src={this.state.topCard ? this.state.topCard.image : ""}
+          className="pile"
         />
-        <p>{this.state.pileCount}</p>
+        <p>{this.state.count}</p>
       </div>
     )
   }
-}
+};
 
-export default connect()(Pile);
+const mTS = state => ({
+  gameId: state.gameId
+})
+
+export default connect(mTS)(Pile);

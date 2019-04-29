@@ -1,7 +1,5 @@
-const functions = require('firebase-functions');
-const {onCreateGame} = require('./slap');
 const {deal} = require('./deal');
-const cors = require('cors')({ origin: true });
+const {onSlapChange} = require('./slap');
 
 
 // // Create and Deploy Your First Cloud Functions
@@ -12,4 +10,5 @@ const cors = require('cors')({ origin: true });
 // });
 
 exports.deal = deal;
+exports.slap = onSlapChange;
 

@@ -34,10 +34,6 @@ p.opponent-name, p.opponent-card-count {
   font-size: 1rem;
 }
 
-img.pile {
-  height: 150%;
-}
-
 #game-table {
   min-width: 100vw;
   min-height: 100vh;
@@ -78,4 +74,7 @@ img.pile {
 #pile {
   min-height: 15rem;
   min-width: 11rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
