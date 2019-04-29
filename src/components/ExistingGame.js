@@ -16,7 +16,11 @@ class ExistingGame extends Component {
 
   async componentDidMount() {
     const gameId = this.props.match.params.roomName;
-    await this.props.getGame(gameId);
+
+    if (!this.props.playerName) {
+      await this.props.getGame(gameId);
+    }
+
     const gameProgressRef = db.ref(`games/${gameId}`).child('inProgress');
     // set state
     gameProgressRef.once('value', (snapshot) => {
@@ -26,7 +30,9 @@ class ExistingGame extends Component {
     });
 
     this.subscribeInProgress = gameProgressRef.on('value', (snapshot) => {
-      this.setState({inProgress: snapshot.val()});
+      this.setState({
+        inProgress: snapshot.val()
+      });
     });
   }
 

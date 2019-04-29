@@ -29,7 +29,7 @@ class PendingGame extends Component {
         <h5>Please wait for the game to start...<br/>Or start it yourself when your group is ready</h5>
         <AvailablePlayers playersList={this.props.playersList} />
         <div>
-          <CircularProgress />
+        <CircularProgress />
         </div>
         <Button variant="contained" type="button" color="primary" onClick={this.props.startGame}>Start Game</Button>
       </div>

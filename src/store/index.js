@@ -12,7 +12,7 @@ const ADD_TO_GAME = 'ADD_TO_GAME';
 const REMOVE_FROM_GAME = 'REMOVE_FROM_GAME';
 const SET_START_GAME = 'SET_START_GAME';
 
-const setGame = (game) => ({
+const setGame = game => ({
   type: SET_GAME,
   game
 });
@@ -67,6 +67,7 @@ export const createNewGame = name => async dispatch => {
       inProgress: false,
       playerName: name
     };
+    console.log(setGameBody)
 
     const createdDeck = await gamesRef.child(new_deckId);
 
