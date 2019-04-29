@@ -47,6 +47,9 @@ class GameTable extends Component {
       const slapped = snapshot.val();
       this.setState({slapped});
     });
+
+    document.addEventListener('keyup', this.dealOnShift);
+    document.addEventListener('keyup', this.slapOnSpace);
   }
 
   componentWillUnmount() {
@@ -54,6 +57,9 @@ class GameTable extends Component {
     this.subscribeSelf && db.ref(`games/${this.props.gameId}/players/${this.props.playerName}/deckCount`).off('value', this.subscribeSelf);
 
     this.subscribeSlaps && db.ref(`games/${this.props.gameId}/slapped`).off('value', this.subscribeSlaps);
+
+    document.removeEventListener('keyup', this.dealOnShift);
+    document.removeEventListener('keyup', this.slapOnSpace);
   }
 
   onDeal() {
@@ -65,6 +71,18 @@ class GameTable extends Component {
 
   onSlap() {
     db.ref(`games/${this.props.gameId}`).child('slapped').set(this.props.playerName);
+  }
+
+  dealOnShift(event) {
+    if (event.key === 'Shift' && (this.state.slapped || !this.state.myDeckCount)) {
+      document.getElementById('dealBtn').click();
+    }
+  }
+
+  slapOnSpace(event) {
+    if (event.key === ' ' && this.state.slapped) {
+      document.getElementById('slapBtn').click();
+    }
   }
 
   render() {
@@ -83,20 +101,22 @@ class GameTable extends Component {
             />
             <div id="buttons">
               <Fab
+                id="dealBtn"
                 variant="round"
                 color="secondary"
                 size="medium"
                 style={{minWidth: '5rem', minHeight: '5rem'}}
-                disabled={this.state.slapped || !this.state.myDeckCount || false}
+                disabled={!!this.state.slapped || !this.state.myDeckCount}
                 onClick={this.onDeal}
                 >
                 Deal
               </Fab>
               <Fab
+                id="slapBtn"
                 variant="round"
                 color="primary"
                 style={{minWidth: '7rem', minHeight: '7rem'}}
-                disabled={this.state.slapped || false}
+                disabled={!!this.state.slapped}
                 onClick={this.onSlap}
                 >
                 SLAP!
