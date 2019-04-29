@@ -21,10 +21,8 @@ class Pile extends Component {
       topCard: pile.topCard
     });
 
-
     // Subscribe to changes
     this.subscribePile = db.ref(`games/${this.props.gameId}/pile`).on('value', snapshot => {
-      console.log("PILE COUNT: ", snapshot.val());
       const pile = snapshot.val();
       this.setState({
         count: pile.cardCount,

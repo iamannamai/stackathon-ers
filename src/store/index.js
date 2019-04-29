@@ -109,9 +109,7 @@ export const startGame = () => async dispatch => {
       gameRef.child('inProgress').set(true),
       gameRef.child('players').set(playersAndHands),
       gameRef.child('pile').set({
-        cards: [],
-        cardCount: 0,
-        topCard: null,
+        cardCount: 0
       }),
       gameRef.child('playerCount').set(Object.keys(playersAndHands.length)),
       gameRef.child('slapped').set(null)

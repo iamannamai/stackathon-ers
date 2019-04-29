@@ -45,6 +45,7 @@ class GameTable extends Component {
     });
     this.subscribeSlaps = db.ref(`games/${this.props.gameId}/slapped`).on('value', snapshot => {
       const slapped = snapshot.val();
+      console.log(slapped);
       this.setState({slapped});
     });
 

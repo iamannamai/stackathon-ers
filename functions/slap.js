@@ -1,18 +1,31 @@
 const {gamesRef, functions} = require('./firebase/fire');
 
 const onSlapChange = functions.database.ref('games/{gameId}/slapped')
-  .onCreate((snapshot, context) => {
+  .onCreate(async (snapshot, context) => {
     const {gameId} = context.params;
     const playerName = snapshot.val();
 
     const playerRef = gamesRef.child(`${gameId}/players/${playerName}`);
+    const pileRef = gamesRef.child(`${gameId}/pile`);
 
-    playerRef.once('value', (snapshot) => {
-      const player = snapshot.val();
-      const {deck, deckCount} = player;
+    const [playerSnap, pileSnap] = await Promise.all([
+      playerRef.once('value'),
+      pileRef.once('value')
+    ]);
 
+    const player = playerSnap.val();
+    const pile = pileSnap.val();
+    const {cards} = pile;
 
-    });
+    evaluateRules(cards, doublesOrSandwiches)
+      ? slapSuccess(player, pile)
+      : slapFail(player, pile);
+
+    console.log("Player: ", player);
+    console.log("PILE: ", pile);
+
+    playerRef.set(player);
+    pileRef.set(pile);
 
     return snapshot.ref.remove();
   });
@@ -20,19 +33,32 @@ const onSlapChange = functions.database.ref('games/{gameId}/slapped')
 const evaluateRules = (pile, ...rules) => {
   if (pile.length > 2) {
     for (let i = 0; i < rules.length; i++) {
-      if (rule[i](pile)) return true;
+      if (rules[i](pile)) return true;
     }
   }
-
   return false;
 };
 
-const slapSuccess = () => {
-
+const doublesOrSandwiches = pile => {
+  const last = pile.length - 1;
+  const double = pile[last].value === pile[last - 1].value;
+  const sandwich = pile[last].value === pile[last - 2].value;
+  return double || sandwich;
 };
 
-const slapFail = () => {
+const slapSuccess = (player, pile) => {
+  player.deck.push(...pile.cards);
+  player.deckCount += pile.cards.length;
+  pile.cards = [];
+  pile.cardCount = 0;
+  pile.topCard = null;
+};
 
+const slapFail = (player, pile) => {
+  const burn = player.deck.shift();
+  player.deckCount--;
+  pile.cards.unshift(burn);
+  pile.cardCount++;
 };
 
 /*
