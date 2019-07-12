@@ -2,6 +2,13 @@
 
 MVP implementation of a multi-player real-time Egyptian Rat Screw game. The main pile is represented by a stack, players hands are queues.
 
+## Stack
+- React (Create React App)
+- Redux
+- Firebase
+  - Fire Functions
+  - Firebase Realtime Database
+
 ## Rules
 
 **Objective**: The goal of the game is to win all the cards in a deck by slapping the pile fastest when valid card sequences are played.
@@ -25,8 +32,6 @@ Currently only the following card sequences have been implemented:
 ## Start Developing
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-### Start Developing
 
 Clone the repository and run:
 
